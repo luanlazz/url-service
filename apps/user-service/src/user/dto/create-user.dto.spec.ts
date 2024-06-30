@@ -79,6 +79,28 @@ describe('CreateUserDto', () => {
     expect(errors.length).toBe(1);
     expect(stringified(errors)).toContain(`username`);
   });
+
+  // email tests
+
+  it('should throw an error if email is null', async () => {
+    userData.email = null;
+    const myDtoObject = plainToInstance(CreateUserDto, userData);
+
+    const errors = await validate(myDtoObject);
+
+    expect(errors.length).toBe(1);
+    expect(stringified(errors)).toContain(`email`);
+  });
+
+  it('should throw an error if email is invalid', async () => {
+    userData.email = faker.word.adverb();
+    const myDtoObject = plainToInstance(CreateUserDto, userData);
+
+    const errors = await validate(myDtoObject);
+
+    expect(errors.length).toBe(1);
+    expect(stringified(errors)).toContain(`isEmail`);
+  });
 });
 
 export function stringified(errors: ValidationError[]): string {

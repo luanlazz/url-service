@@ -5,5 +5,6 @@ export const createUserDTOMockData = (): CreateUserDto => {
   return {
     name: faker.person.fullName(),
     username: faker.internet.userName(),
+    email: faker.internet.email(),
   };
 };
