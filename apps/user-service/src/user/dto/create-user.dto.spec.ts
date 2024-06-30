@@ -101,6 +101,49 @@ describe('CreateUserDto', () => {
     expect(errors.length).toBe(1);
     expect(stringified(errors)).toContain(`isEmail`);
   });
+
+  // email tests
+
+  it('should throw an error if password is null', async () => {
+    userData.password = null;
+    const myDtoObject = plainToInstance(CreateUserDto, userData);
+
+    const errors = await validate(myDtoObject);
+
+    expect(errors.length).toBe(1);
+    expect(stringified(errors)).toContain(`password`);
+  });
+
+  it('should throw an error if password is weak', async () => {
+    userData.password = '123';
+    const myDtoObject = plainToInstance(CreateUserDto, userData);
+
+    const errors = await validate(myDtoObject);
+
+    expect(errors.length).toBe(1);
+    expect(stringified(errors)).toContain(`password`);
+  });
+
+  // confPassword tests
+  it('should throw an error if confPassword is null', async () => {
+    userData.confPassword = null;
+    const myDtoObject = plainToInstance(CreateUserDto, userData);
+
+    const errors = await validate(myDtoObject);
+
+    expect(errors.length).toBe(1);
+    expect(stringified(errors)).toContain(`confPassword`);
+  });
+
+  // it('should throw an error if password and confPassword are different', async () => {
+  //   userData.confPassword = faker.internet.password();
+  //   const myDtoObject = plainToInstance(CreateUserDto, userData);
+
+  //   const errors = await validate(myDtoObject);
+
+  //   expect(errors.length).toBe(1);
+  //   expect(stringified(errors)).toContain(`confPassword`);
+  // });
 });
 
 export function stringified(errors: ValidationError[]): string {
