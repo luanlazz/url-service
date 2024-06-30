@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo '🏗️👷 testing, Styling and linting your project before committing'
+
+yarn run test
+
+# Check Prettier standards
+yarn run format
+
+# Check ESLint Standards
+yarn run lint
