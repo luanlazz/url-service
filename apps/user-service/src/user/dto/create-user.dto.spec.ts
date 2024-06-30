@@ -13,8 +13,8 @@ describe('CreateUserDto', () => {
   it('should throw an error if name is null', async () => {
     const userData = {
       name: null,
+      username: faker.internet.userName(),
     };
-
     const myDtoObject = plainToInstance(CreateUserDto, userData);
 
     const errors = await validate(myDtoObject);
@@ -26,8 +26,8 @@ describe('CreateUserDto', () => {
   it('should throw an error if name is short', async () => {
     const userData = {
       name: faker.string.alpha(1),
+      username: faker.internet.userName(),
     };
-
     const myDtoObject = plainToInstance(CreateUserDto, userData);
 
     const errors = await validate(myDtoObject);
@@ -36,17 +36,58 @@ describe('CreateUserDto', () => {
     expect(stringified(errors)).toContain(`name`);
   });
 
-  it('should throw an error if name is short', async () => {
+  it('should throw an error if name is long', async () => {
     const userData = {
       name: faker.string.alpha(200),
+      username: faker.internet.userName(),
     };
-
     const myDtoObject = plainToInstance(CreateUserDto, userData);
 
     const errors = await validate(myDtoObject);
 
     expect(errors.length).toBe(1);
     expect(stringified(errors)).toContain(`name`);
+  });
+
+  // username tests
+
+  it('should throw an error if username is null', async () => {
+    const userData = {
+      name: faker.person.fullName(),
+      username: null,
+    };
+    const myDtoObject = plainToInstance(CreateUserDto, userData);
+
+    const errors = await validate(myDtoObject);
+
+    expect(errors.length).toBe(1);
+    expect(stringified(errors)).toContain(`username`);
+  });
+
+  it('should throw an error if username is short', async () => {
+    const userData = {
+      name: faker.person.fullName(),
+      username: faker.string.alpha(3),
+    };
+    const myDtoObject = plainToInstance(CreateUserDto, userData);
+
+    const errors = await validate(myDtoObject);
+
+    expect(errors.length).toBe(1);
+    expect(stringified(errors)).toContain(`username`);
+  });
+
+  it('should throw an error if username is long', async () => {
+    const userData = {
+      name: faker.person.fullName(),
+      username: faker.string.alpha(51),
+    };
+    const myDtoObject = plainToInstance(CreateUserDto, userData);
+
+    const errors = await validate(myDtoObject);
+
+    expect(errors.length).toBe(1);
+    expect(stringified(errors)).toContain(`username`);
   });
 });
 
