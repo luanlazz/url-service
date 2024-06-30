@@ -15,8 +15,8 @@ describe('UrlServiceController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(urlServiceController.getHello()).toBe('Hello World!');
+    it('should return "Hello World url!"', () => {
+      expect(urlServiceController.getHello()).toBe('Hello World url!');
     });
   });
 });
