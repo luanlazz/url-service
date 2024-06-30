@@ -3,18 +3,23 @@ import { CreateUserDto } from './create-user.dto';
 import { plainToInstance } from 'class-transformer';
 import { ValidationError } from '@nestjs/common';
 import { faker } from '@faker-js/faker';
+import { createUserDTOMockData } from '../mocks/create-user.dto.mock';
+
+let userData: CreateUserDto = new CreateUserDto();
 
 describe('CreateUserDto', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    userData = createUserDTOMockData();
+  });
+
   it('should be defined', () => {
     const createUserDto = new CreateUserDto();
     expect(createUserDto).toBeDefined();
   });
 
   it('should throw an error if name is null', async () => {
-    const userData = {
-      name: null,
-      username: faker.internet.userName(),
-    };
+    userData.name = null;
     const myDtoObject = plainToInstance(CreateUserDto, userData);
 
     const errors = await validate(myDtoObject);
@@ -24,10 +29,7 @@ describe('CreateUserDto', () => {
   });
 
   it('should throw an error if name is short', async () => {
-    const userData = {
-      name: faker.string.alpha(1),
-      username: faker.internet.userName(),
-    };
+    userData.name = faker.string.alpha(1);
     const myDtoObject = plainToInstance(CreateUserDto, userData);
 
     const errors = await validate(myDtoObject);
@@ -37,10 +39,7 @@ describe('CreateUserDto', () => {
   });
 
   it('should throw an error if name is long', async () => {
-    const userData = {
-      name: faker.string.alpha(200),
-      username: faker.internet.userName(),
-    };
+    userData.name = faker.string.alpha(200);
     const myDtoObject = plainToInstance(CreateUserDto, userData);
 
     const errors = await validate(myDtoObject);
@@ -52,10 +51,7 @@ describe('CreateUserDto', () => {
   // username tests
 
   it('should throw an error if username is null', async () => {
-    const userData = {
-      name: faker.person.fullName(),
-      username: null,
-    };
+    userData.username = null;
     const myDtoObject = plainToInstance(CreateUserDto, userData);
 
     const errors = await validate(myDtoObject);
@@ -65,10 +61,7 @@ describe('CreateUserDto', () => {
   });
 
   it('should throw an error if username is short', async () => {
-    const userData = {
-      name: faker.person.fullName(),
-      username: faker.string.alpha(3),
-    };
+    userData.username = faker.string.alpha(3);
     const myDtoObject = plainToInstance(CreateUserDto, userData);
 
     const errors = await validate(myDtoObject);
@@ -78,10 +71,7 @@ describe('CreateUserDto', () => {
   });
 
   it('should throw an error if username is long', async () => {
-    const userData = {
-      name: faker.person.fullName(),
-      username: faker.string.alpha(51),
-    };
+    userData.username = faker.string.alpha(51);
     const myDtoObject = plainToInstance(CreateUserDto, userData);
 
     const errors = await validate(myDtoObject);
