@@ -18,12 +18,10 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "auth/auth": [
-        "libs/auth/src"
-      ],
-      "auth/auth/*": [
-        "libs/auth/src/*"
-      ]
+      "apps/*": ["./apps/*"],
+      "libs/*": ["./libs/*"],
+      "@app/unique-id": ["libs/unique-id/src"],
+      "@app/unique-id/*": ["libs/unique-id/src/*"]
     }
   }
 }

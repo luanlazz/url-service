@@ -45,6 +45,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/auth/tsconfig.lib.json"
       }
+    },
+    "unique-id": {
+      "type": "library",
+      "root": "libs/unique-id",
+      "entryFile": "index",
+      "sourceRoot": "libs/unique-id/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/unique-id/tsconfig.lib.json"
+      }
     }
   }
 }
