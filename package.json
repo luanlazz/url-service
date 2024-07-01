@@ -34,11 +34,13 @@
     ],
     "moduleNameMapper": {
       "^@app/unique-id(|/.*)$": "<rootDir>/libs/unique-id/src/$1",
-      "^libs/(.*)$": "<rootDir>/libs$1"
+      "^libs/(.*)$": "<rootDir>/libs$1",
+      "^@app/hashing(|/.*)$": "<rootDir>/libs/hashing/src/$1"
     },
     "rootDir": ".",
     "roots": [
-      "<rootDir>/apps/"
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
     ],
     "testEnvironment": "node",
     "testRegex": ".*\\.spec\\.ts$",
@@ -53,6 +55,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/typeorm": "^10.0.2",
     "@paralleldrive/cuid2": "^2.2.2",
+    "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "pg": "^8.12.0",

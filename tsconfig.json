@@ -21,7 +21,9 @@
       "apps/*": ["./apps/*"],
       "libs/*": ["./libs/*"],
       "@app/unique-id": ["libs/unique-id/src"],
-      "@app/unique-id/*": ["libs/unique-id/src/*"]
+      "@app/unique-id/*": ["libs/unique-id/src/*"],
+      "@app/hashing": ["libs/hashing/src"],
+      "@app/hashing/*": ["libs/hashing/src/*"]
     }
   }
 }
