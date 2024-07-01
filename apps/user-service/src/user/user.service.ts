@@ -1,12 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
+import { UniqueIdService } from '../../../../libs/unique-id/src';
 
 @Injectable()
 export class UserService {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(private readonly uniqueId: UniqueIdService) {}
+
+  create(createUserDto: CreateUserDto): Promise<User> {
+    const user: User = new User();
+
+    user.id = this.uniqueId.generate();
+    user.name = createUserDto.name;
+    user.email = createUserDto.email;
+    user.username = createUserDto.username;
+    user.password = createUserDto.password;
   }
 
   findAll() {
