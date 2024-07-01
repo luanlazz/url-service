@@ -9,6 +9,10 @@
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "migration:create": "yarn run typeorm -- migration:create ./src/migrations/$npm_config_name",
+    "migration:generate": "yarn run typeorm -- -d ./src/config/typeorm.ts migration:generate ./src/migrations/$npm_config_name",
+    "migration:revert": "yarn run typeorm -- -d ./src/config/typeorm.ts migration:revert",
+    "migration:run": "yarn run typeorm migration:run -- -d ./src/config/typeorm.ts",
     "precommit": "lint-staged && yarn test",
     "prepare": "husky install",
     "prepush": "yarn run test",
@@ -20,7 +24,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/url-project/test/jest-e2e.json",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "typeorm": "ts-node ./node_modules/typeorm/cli"
   },
   "jest": {
     "collectCoverageFrom": [

@@ -4,10 +4,12 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UniqueIdService } from '../../../../libs/unique-id/src';
 import { HashingService } from '../../../../libs/hashing/src';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
   constructor(
+    private readonly userRepository: UserRepository,
     private readonly uniqueId: UniqueIdService,
     private readonly hashingService: HashingService,
   ) {}
@@ -20,6 +22,8 @@ export class UserService {
     user.email = createUserDto.email;
     user.username = createUserDto.username;
     user.password = await this.hashingService.hash(createUserDto.password);
+
+    return await this.userRepository.save(user);
   }
 
   findAll() {
