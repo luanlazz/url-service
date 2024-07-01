@@ -4,11 +4,13 @@ import { UserService } from './user.service';
 import { createUserDTOMockData } from './mocks/create-user.dto.mock';
 import { UniqueIdService } from '../../../../libs/unique-id/src';
 import { HashingService } from '../../../../libs/hashing/src';
+import { UserRepository } from './user.repository';
 
 describe('UserService', () => {
   let service: UserService;
   let uniqueId: jest.Mocked<UniqueIdService>;
   let hashingService: jest.Mocked<HashingService>;
+  let database: jest.Mocked<UserRepository>;
 
   beforeEach(async () => {
     const { unit, unitRef } = TestBed.create(UserService).compile();
@@ -16,6 +18,7 @@ describe('UserService', () => {
     service = unit;
     uniqueId = unitRef.get(UniqueIdService);
     hashingService = unitRef.get(HashingService);
+    database = unitRef.get(UserRepository);
   });
 
   it('should be defined', () => {
@@ -42,5 +45,24 @@ describe('UserService', () => {
     service.create(createUserDto);
 
     expect(hashingSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call database save once when creating a user', async () => {
+    const createUserDto = createUserDTOMockData();
+    const databaseSpy = jest.spyOn(database, 'save').mockReturnValue(
+      new Promise((resolve) =>
+        resolve({
+          ...createUserDto,
+          id: faker.string.uuid(),
+          created_at: faker.date.recent(),
+          updated_at: faker.date.recent(),
+          deleted_at: null,
+        }),
+      ),
+    );
+
+    await service.create(createUserDto);
+
+    expect(databaseSpy).toHaveBeenCalledTimes(1);
   });
 });
