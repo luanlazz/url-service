@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { config as dotenvConfig } from 'dotenv';
 import { CreateURLDto } from '../dto/create-url.dto';
 import { Url } from '../entities/url.entity';
@@ -24,5 +24,12 @@ export class UrlService {
     savedUrl.new_url = `${process.env.BASE_URL}:${process.env.PORT_URL_API}/${url.id}`;
 
     return savedUrl;
+  }
+
+  async findById(id: string): Promise<string> {
+    const url = await this.urlRepository.findOne({ where: { id } });
+    if (!url) {
+      throw new NotFoundException('URL not found');
+    }
   }
 }
