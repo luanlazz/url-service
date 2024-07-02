@@ -25,24 +25,24 @@ describe('UserService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should call uniqueId service once when creating a user', () => {
+  it('should call uniqueId service once when creating a user', async () => {
     const createUserDto = createUserDTOMockData();
     const uniqueIdSpy = jest
       .spyOn(uniqueId, 'generate')
       .mockReturnValue(faker.string.uuid());
 
-    service.create(createUserDto);
+    await service.create(createUserDto);
 
     expect(uniqueIdSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should call hashing service once when creating a user', () => {
+  it('should call hashing service once when creating a user', async () => {
     const createUserDto = createUserDTOMockData();
     const hashingSpy = jest
       .spyOn(hashingService, 'hash')
       .mockReturnValue(new Promise((resolve) => resolve(faker.string.uuid())));
 
-    service.create(createUserDto);
+    await service.create(createUserDto);
 
     expect(hashingSpy).toHaveBeenCalledTimes(1);
   });
@@ -78,6 +78,35 @@ describe('UserService', () => {
     } catch (error) {
       expect(error).toBeInstanceOf(Error);
       expect(error).toHaveProperty('message', 'Passwords do not match');
+    }
+  });
+
+  it('should throw an error when email already in use', async () => {
+    const createUserDto = createUserDTOMockData();
+
+    jest.spyOn(database, 'findByEmail').mockReturnValue(
+      new Promise((resolve) =>
+        resolve(
+          new Promise((resolve) =>
+            resolve({
+              ...createUserDto,
+              id: faker.string.uuid(),
+              created_at: faker.date.recent(),
+              updated_at: faker.date.recent(),
+              deleted_at: null,
+            }),
+          ),
+        ),
+      ),
+    );
+
+    expect.assertions(2);
+
+    try {
+      await service.create(createUserDto);
+    } catch (error) {
+      expect(error).toBeInstanceOf(Error);
+      expect(error).toHaveProperty('message', 'Email already in use');
     }
   });
 });
