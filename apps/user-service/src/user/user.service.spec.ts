@@ -138,6 +138,20 @@ describe('UserService', () => {
     const response = await service.findOneById(user.id);
 
     expect(response).toEqual(user);
+    expect(response).not.toHaveProperty('password');
+  });
+
+  it('should return a user with pass when findOneById is called with hidePass set to false', async () => {
+    const user = createUserEntityMockData();
+
+    jest
+      .spyOn(database, 'findOneBy')
+      .mockReturnValue(new Promise((resolve) => resolve(user)));
+
+    const response = await service.findOneById(user.id, false);
+
+    expect(response).toEqual(user);
+    expect(response).toHaveProperty('password');
   });
 
   it('should return a user when findOneByEmail is called', async () => {
@@ -150,5 +164,19 @@ describe('UserService', () => {
     const response = await service.findOneByEmail(user.email);
 
     expect(response).toEqual(user);
+    expect(response).not.toHaveProperty('password');
+  });
+
+  it('should return a user with pass when findOneByEmail is called with hidePass set to false', async () => {
+    const user = createUserEntityMockData();
+
+    jest
+      .spyOn(database, 'findByEmail')
+      .mockReturnValue(new Promise((resolve) => resolve(user)));
+
+    const response = await service.findOneByEmail(user.email, false);
+
+    expect(response).toEqual(user);
+    expect(response).toHaveProperty('password');
   });
 });
