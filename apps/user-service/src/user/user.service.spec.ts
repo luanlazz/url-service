@@ -5,6 +5,7 @@ import { createUserDTOMockData } from './mocks/create-user.dto.mock';
 import { UniqueIdService } from '../../../../libs/unique-id/src';
 import { HashingService } from '../../../../libs/hashing/src';
 import { UserRepository } from './user.repository';
+import { BadRequestException } from '@nestjs/common';
 import { createUserEntityMockData } from './mocks/user.entity.mock';
 
 describe('UserService', () => {
@@ -77,7 +78,7 @@ describe('UserService', () => {
     try {
       await service.create(createUserDto);
     } catch (error) {
-      expect(error).toBeInstanceOf(Error);
+      expect(error).toBeInstanceOf(BadRequestException);
       expect(error).toHaveProperty('message', 'Passwords do not match');
     }
   });
@@ -106,7 +107,7 @@ describe('UserService', () => {
     try {
       await service.create(createUserDto);
     } catch (error) {
-      expect(error).toBeInstanceOf(Error);
+      expect(error).toBeInstanceOf(BadRequestException);
       expect(error).toHaveProperty('message', 'Email already in use');
     }
   });

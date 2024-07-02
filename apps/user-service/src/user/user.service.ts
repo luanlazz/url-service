@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -16,11 +16,11 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto): Promise<Partial<User>> {
     if (createUserDto.password !== createUserDto.confPassword) {
-      throw new Error('Passwords do not match');
+      throw new BadRequestException('Passwords do not match');
     }
 
     if (await this.userRepository.findByEmail(createUserDto.email)) {
-      throw new Error('Email already in use');
+      throw new BadRequestException('Email already in use');
     }
 
     const user: User = new User();
