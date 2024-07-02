@@ -1,3 +1,3 @@
 export abstract class IUniqueId {
-  abstract generate(): string;
+  abstract generate(length?: number): string;
 }

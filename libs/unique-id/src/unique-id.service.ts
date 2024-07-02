@@ -4,8 +4,7 @@ import { IUniqueId } from 'libs/unique-id/src/adapter';
 
 @Injectable()
 export class UniqueIdService implements IUniqueId {
-  generate(): string {
-    const length = 14;
+  generate(length: number = 14): string {
     const cuid = init({ length });
     return cuid();
   }
