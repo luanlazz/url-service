@@ -1,9 +1,13 @@
 import { TestBed } from '@automock/jest';
+import { config as dotenvConfig } from 'dotenv';
 import { UrlService } from './url.service';
 import { CreateURLDto } from '../dto/create-url.dto';
 import { faker } from '@faker-js/faker';
 import { UniqueIdService } from '../../../../libs/unique-id/src';
 import { UrlRepository } from '../repository/url.repository';
+import { createUrlEntityMockData } from '../mocks/url.entity.mock';
+
+dotenvConfig({ path: '.env' });
 
 describe('UrlService', () => {
   let service: UrlService;
@@ -16,6 +20,12 @@ describe('UrlService', () => {
     service = unit;
     uniqueIdService = unitRef.get(UniqueIdService);
     urlRepository = unitRef.get(UrlRepository);
+
+    urlRepository.save.mockReturnValue(
+      new Promise((resolve) =>
+        resolve(new Promise((resolve) => resolve(createUrlEntityMockData()))),
+      ),
+    );
   });
 
   it('should be defined', () => {
@@ -28,7 +38,7 @@ describe('UrlService', () => {
       url: faker.internet.url(),
     };
 
-    service.createUrl(data);
+    await service.createUrl(data);
 
     expect(uniqueIdService.generate).toHaveBeenCalledTimes(1);
     expect(uniqueIdService.generate).toHaveBeenCalledWith(6);
@@ -49,7 +59,24 @@ describe('UrlService', () => {
     expect(urlRepository.save).toHaveBeenCalledWith({
       id,
       name: data.name,
-      originalUrl: data.url,
+      original_url: data.url,
     });
+  });
+
+  it('should return the created url', async () => {
+    const data: CreateURLDto = {
+      name: faker.lorem.words(),
+      url: faker.internet.url(),
+    };
+
+    const id = faker.string.uuid();
+    jest.spyOn(uniqueIdService, 'generate').mockReturnValue(id);
+
+    const url = await service.createUrl(data);
+
+    const newUrl = `${process.env.BASE_URL}:${process.env.PORT_URL_API}/${id}`;
+
+    expect(url).toHaveProperty('new_url');
+    expect(url.new_url).toEqual(newUrl);
   });
 });
