@@ -6,6 +6,7 @@ import { faker } from '@faker-js/faker';
 import { UniqueIdService } from '../../../../libs/unique-id/src';
 import { UrlRepository } from '../repository/url.repository';
 import { createUrlEntityMockData } from '../mocks/url.entity.mock';
+import { createUrlDTOMockData } from '../mocks/create-url.dto.mock';
 
 dotenvConfig({ path: '.env' });
 
@@ -33,10 +34,7 @@ describe('UrlService', () => {
   });
 
   it('should generate a id with length 6', async () => {
-    const data: CreateURLDto = {
-      name: faker.lorem.words(),
-      url: faker.internet.url(),
-    };
+    const data: CreateURLDto = createUrlDTOMockData();
 
     await service.createUrl(data);
 
@@ -45,10 +43,7 @@ describe('UrlService', () => {
   });
 
   it('should call urlRepository save once', async () => {
-    const data: CreateURLDto = {
-      name: faker.lorem.words(),
-      url: faker.internet.url(),
-    };
+    const data: CreateURLDto = createUrlDTOMockData();
 
     const id = faker.string.uuid();
     jest.spyOn(uniqueIdService, 'generate').mockReturnValue(id);
@@ -64,10 +59,7 @@ describe('UrlService', () => {
   });
 
   it('should return the created url', async () => {
-    const data: CreateURLDto = {
-      name: faker.lorem.words(),
-      url: faker.internet.url(),
-    };
+    const data: CreateURLDto = createUrlDTOMockData();
 
     const id = faker.string.uuid();
     jest.spyOn(uniqueIdService, 'generate').mockReturnValue(id);
@@ -78,5 +70,19 @@ describe('UrlService', () => {
 
     expect(url).toHaveProperty('new_url');
     expect(url.new_url).toEqual(newUrl);
+  });
+
+  it('should throw an error when id is not found', async () => {
+    const id = faker.string.uuid();
+    urlRepository.findOne.mockResolvedValue(null);
+
+    expect.assertions(2);
+
+    try {
+      await service.findById(id);
+    } catch (error) {
+      expect(error).toBeInstanceOf(Error);
+      expect(error).toHaveProperty('message', 'URL not found');
+    }
   });
 });
