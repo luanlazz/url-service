@@ -1,29 +1,26 @@
-import { Url } from '../../../../url-service/src/entities/url.entity';
+import { User } from '../../../user-service/src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
-export class User {
-  @Column({ primary: true })
+export class Url {
+  @Column({ primary: true, type: 'varchar', length: 6 })
   id: string;
 
   @Column({ type: 'varchar', length: 150, nullable: false })
   name: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
-  username: string;
-
   @Column({ type: 'varchar', length: 150, nullable: false })
-  email: string;
+  originalUrl: string;
 
-  @Column({ type: 'varchar', nullable: false })
-  password: string;
+  @ManyToOne(() => User, (user) => user.urls, { nullable: false })
+  user: User;
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
@@ -33,7 +30,4 @@ export class User {
 
   @DeleteDateColumn({ type: 'timestamp' })
   deleted_at: Date;
-
-  @OneToMany(() => Url, (url) => url.user, { nullable: false })
-  urls: Url[];
 }

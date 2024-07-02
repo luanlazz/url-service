@@ -51,17 +51,11 @@ describe('UserService', () => {
 
   it('should call database save once when creating a user', async () => {
     const createUserDto = createUserDTOMockData();
-    const databaseSpy = jest.spyOn(database, 'save').mockReturnValue(
-      new Promise((resolve) =>
-        resolve({
-          ...createUserDto,
-          id: faker.string.uuid(),
-          created_at: faker.date.recent(),
-          updated_at: faker.date.recent(),
-          deleted_at: null,
-        }),
-      ),
-    );
+    const databaseSpy = jest
+      .spyOn(database, 'save')
+      .mockReturnValue(
+        new Promise((resolve) => resolve(createUserEntityMockData())),
+      );
 
     await service.create(createUserDto);
 
@@ -86,21 +80,15 @@ describe('UserService', () => {
   it('should throw an error when email already in use', async () => {
     const createUserDto = createUserDTOMockData();
 
-    jest.spyOn(database, 'findByEmail').mockReturnValue(
-      new Promise((resolve) =>
-        resolve(
-          new Promise((resolve) =>
-            resolve({
-              ...createUserDto,
-              id: faker.string.uuid(),
-              created_at: faker.date.recent(),
-              updated_at: faker.date.recent(),
-              deleted_at: null,
-            }),
+    jest
+      .spyOn(database, 'findByEmail')
+      .mockReturnValue(
+        new Promise((resolve) =>
+          resolve(
+            new Promise((resolve) => resolve(createUserEntityMockData())),
           ),
         ),
-      ),
-    );
+      );
 
     expect.assertions(2);
 
