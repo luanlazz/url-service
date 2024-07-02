@@ -2,6 +2,7 @@ import { TestBed } from '@automock/jest';
 import { UrlController } from './url.controller';
 import { UrlService } from '../service/url.service';
 import { createUrlDTOMockData } from '../mocks/create-url.dto.mock';
+import { createUrlEntityMockData } from '../mocks/url.entity.mock';
 
 describe('UrlController', () => {
   let controller: UrlController;
@@ -36,5 +37,20 @@ describe('UrlController', () => {
     const result = await controller.create(data);
 
     expect(result).toEqual(url);
+  });
+
+  it('should redirect to the original url', async () => {
+    const urlMock = createUrlEntityMockData();
+    urlMock.id = '123';
+    urlMock.original_url = 'https://google.com';
+
+    jest.spyOn(service, 'findById').mockResolvedValue(urlMock);
+
+    const result = await controller.redirect(urlMock.id);
+
+    expect(result).toHaveProperty('url');
+    expect(result.url).toEqual(urlMock.original_url);
+    expect(result).toHaveProperty('statusCode');
+    expect(result.statusCode).toEqual(302);
   });
 });
