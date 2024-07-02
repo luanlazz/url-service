@@ -12,19 +12,30 @@ import {
 import { UrlService } from '../service/url.service';
 import { CreateURLDto } from '../dto/create-url.dto';
 import { Public } from '../public.decorator';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { UpdateURLDto } from '../dto/update-url.dto';
 
+@ApiTags('URL')
 @Controller()
 export class UrlController {
   constructor(private readonly urlService: UrlService) {}
 
   @Public()
   @Post()
+  @ApiBody({
+    type: CreateURLDto,
+    description: 'Json structure for url object',
+  })
   create(@Body() createUrlDto: CreateURLDto) {
     return this.urlService.createUrl(createUrlDto);
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateUrlDto: CreateURLDto) {
+  @ApiBody({
+    type: UpdateURLDto,
+    description: 'Json structure for url object',
+  })
+  async update(@Param('id') id: string, @Body() updateUrlDto: UpdateURLDto) {
     return this.urlService.updateUrl(id, updateUrlDto);
   }
 
