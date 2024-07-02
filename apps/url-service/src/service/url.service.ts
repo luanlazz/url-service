@@ -26,10 +26,12 @@ export class UrlService {
     return savedUrl;
   }
 
-  async findById(id: string): Promise<string> {
+  async findById(id: string): Promise<Url> {
     const url = await this.urlRepository.findOne({ where: { id } });
     if (!url) {
       throw new NotFoundException('URL not found');
     }
+
+    return url;
   }
 }
