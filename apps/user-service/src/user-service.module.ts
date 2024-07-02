@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { UserServiceController } from './user-service.controller';
-import { UserServiceService } from './user-service.service';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { config as dotenvConfig } from 'dotenv';
@@ -23,7 +21,5 @@ dotenvConfig({ path: '.env' });
     }),
     UserModule,
   ],
-  controllers: [UserServiceController],
-  providers: [UserServiceService],
 })
 export class UserServiceModule {}
