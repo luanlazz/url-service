@@ -23,6 +23,9 @@ export class UrlController {
   @Redirect()
   async redirect(@Param('id') id: string) {
     const url = await this.urlService.findById(id);
+
+    await this.urlService.incrementAccessCount(id);
+
     const response: HttpRedirectResponse = {
       statusCode: 302,
       url: url.original_url,
