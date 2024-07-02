@@ -21,7 +21,7 @@ URL:
 Primeiro passo é criar o arquivo `.env` seguindo como modelo `.env.example`.
 
 ```bash
-cp .env.example .env2
+cp .env.example .env
 ```
 
 Após, basta subir o serviço com o seguinte comando:
