@@ -53,4 +53,14 @@ describe('UrlController', () => {
     expect(result).toHaveProperty('statusCode');
     expect(result.statusCode).toEqual(302);
   });
+
+  it('should call service incrementAccessCount once', async () => {
+    const urlMock = createUrlEntityMockData();
+    jest.spyOn(service, 'findById').mockResolvedValue(urlMock);
+
+    await controller.redirect(urlMock.id);
+
+    expect(service.incrementAccessCount).toHaveBeenCalledTimes(1);
+    expect(service.incrementAccessCount).toHaveBeenCalledWith(urlMock.id);
+  });
 });
