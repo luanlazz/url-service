@@ -6,6 +6,7 @@ import {
   Post,
   HttpRedirectResponse,
   Redirect,
+  Put,
 } from '@nestjs/common';
 import { UrlService } from '../service/url.service';
 import { CreateURLDto } from '../dto/create-url.dto';
@@ -19,6 +20,11 @@ export class UrlController {
   @Post()
   create(@Body() createUrlDto: CreateURLDto) {
     return this.urlService.createUrl(createUrlDto);
+  }
+
+  @Put(':id')
+  async update(@Param('id') id: string, @Body() updateUrlDto: CreateURLDto) {
+    return this.urlService.updateUrl(id, updateUrlDto);
   }
 
   @Get('/list')

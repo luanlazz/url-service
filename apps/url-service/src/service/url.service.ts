@@ -11,6 +11,7 @@ import { Url } from '../entities/url.entity';
 import { UniqueIdService } from '../../../../libs/unique-id/src';
 import { UrlRepository } from '../repository/url.repository';
 import { REQUEST } from '@nestjs/core';
+import { UpdateURLDto } from '../dto/update-url.dto';
 
 dotenvConfig({ path: '.env' });
 
@@ -36,6 +37,21 @@ export class UrlService {
     savedUrl.new_url = this.makeRedirectUrl(url);
 
     return savedUrl;
+  }
+
+  async updateUrl(
+    id: string,
+    updateUrlDTO: UpdateURLDto,
+  ): Promise<Partial<Url>> {
+    const url = await this.findById(id);
+
+    url.name = updateUrlDTO.name;
+    url.original_url = updateUrlDTO.url;
+
+    const updatedUrl = await this.urlRepository.save(url);
+    updatedUrl.new_url = this.makeRedirectUrl(url);
+
+    return updatedUrl;
   }
 
   async findById(id: string): Promise<Url> {
