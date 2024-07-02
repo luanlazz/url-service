@@ -4,7 +4,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UserService } from '../../user/user.service';
+import { UserService } from '../../user/service/user.service';
 import { HashingService } from '../../../../../libs/hashing/src';
 import { JwtService } from '@nestjs/jwt';
 

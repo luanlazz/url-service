@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './entities/user.entity';
-import { UniqueIdService } from '../../../../libs/unique-id/src';
-import { HashingService } from '../../../../libs/hashing/src';
-import { UserRepository } from './repository/user.repository';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { User } from '../entities/user.entity';
+import { UniqueIdService } from '../../../../../libs/unique-id/src';
+import { HashingService } from '../../../../../libs/hashing/src';
+import { UserRepository } from '../repository/user.repository';
 
 @Injectable()
 export class UserService {

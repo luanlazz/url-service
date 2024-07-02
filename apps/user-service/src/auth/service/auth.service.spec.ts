@@ -1,7 +1,7 @@
 import { AuthService } from './auth.service';
 import { TestBed } from '@automock/jest';
 import { HashingService } from '../../../../../libs/hashing/src';
-import { UserService } from '../../user/user.service';
+import { UserService } from '../../user/service/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { createUserEntityMockData } from '../../user/mocks/user.entity.mock';

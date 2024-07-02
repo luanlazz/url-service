@@ -1,12 +1,12 @@
 import { TestBed } from '@automock/jest';
 import { faker } from '@faker-js/faker';
 import { UserService } from './user.service';
-import { createUserDTOMockData } from './mocks/create-user.dto.mock';
-import { UniqueIdService } from '../../../../libs/unique-id/src';
-import { HashingService } from '../../../../libs/hashing/src';
-import { UserRepository } from './repository/user.repository';
+import { createUserDTOMockData } from '../mocks/create-user.dto.mock';
+import { UniqueIdService } from '../../../../../libs/unique-id/src';
+import { HashingService } from '../../../../../libs/hashing/src';
+import { UserRepository } from '../repository/user.repository';
 import { BadRequestException } from '@nestjs/common';
-import { createUserEntityMockData } from './mocks/user.entity.mock';
+import { createUserEntityMockData } from '../mocks/user.entity.mock';
 
 describe('UserService', () => {
   let service: UserService;
