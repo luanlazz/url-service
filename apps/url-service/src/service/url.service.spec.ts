@@ -95,4 +95,19 @@ describe('UrlService', () => {
 
     expect(url.original_url).toEqual(url.original_url);
   });
+
+  it('should increment access_count by 1', async () => {
+    const id = faker.string.uuid();
+    const urlMock = createUrlEntityMockData();
+    urlRepository.findOne.mockResolvedValue(urlMock);
+
+    await service.incrementAccessCount(id);
+
+    expect(urlRepository.increment).toHaveBeenCalledTimes(1);
+    expect(urlRepository.increment).toHaveBeenCalledWith(
+      { id },
+      'access_count',
+      1,
+    );
+  });
 });
