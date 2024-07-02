@@ -1,17 +1,13 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
-import { UserService } from './user.service';
+import { TestBed } from '@automock/jest';
 
 describe('UserController', () => {
   let controller: UserController;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [UserController],
-      providers: [UserService],
-    }).compile();
+    const { unit } = TestBed.create(UserController).compile();
 
-    controller = module.get<UserController>(UserController);
+    controller = unit;
   });
 
   it('should be defined', () => {
