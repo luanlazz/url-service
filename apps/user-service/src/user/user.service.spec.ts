@@ -65,4 +65,19 @@ describe('UserService', () => {
 
     expect(databaseSpy).toHaveBeenCalledTimes(1);
   });
+
+  it('should throw an error when passwords do not match', async () => {
+    const createUserDto = createUserDTOMockData();
+    createUserDto.password = 'password';
+    createUserDto.confPassword = 'password1';
+
+    expect.assertions(2);
+
+    try {
+      await service.create(createUserDto);
+    } catch (error) {
+      expect(error).toBeInstanceOf(Error);
+      expect(error).toHaveProperty('message', 'Passwords do not match');
+    }
+  });
 });
