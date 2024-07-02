@@ -54,6 +54,16 @@ export class UrlService {
     return updatedUrl;
   }
 
+  async deleteUrl(id: string): Promise<Partial<Url>> {
+    const url = await this.findById(id);
+
+    url.deleted_at = new Date();
+
+    const updatedUrl = await this.urlRepository.save(url);
+
+    return updatedUrl;
+  }
+
   async findById(id: string): Promise<Url> {
     const userId = this.request['user']?.sub || null;
 

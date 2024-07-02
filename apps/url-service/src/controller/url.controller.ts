@@ -7,6 +7,7 @@ import {
   HttpRedirectResponse,
   Redirect,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { UrlService } from '../service/url.service';
 import { CreateURLDto } from '../dto/create-url.dto';
@@ -25,6 +26,11 @@ export class UrlController {
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateUrlDto: CreateURLDto) {
     return this.urlService.updateUrl(id, updateUrlDto);
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return this.urlService.deleteUrl(id);
   }
 
   @Get('/list')
