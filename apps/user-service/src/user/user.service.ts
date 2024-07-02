@@ -15,6 +15,10 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
+    if (createUserDto.password !== createUserDto.confPassword) {
+      throw new Error('Passwords do not match');
+    }
+
     const user: User = new User();
 
     user.id = this.uniqueId.generate();
