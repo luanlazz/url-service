@@ -14,7 +14,7 @@ export class UserService {
     private readonly hashingService: HashingService,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<Partial<User>> {
     if (createUserDto.password !== createUserDto.confPassword) {
       throw new Error('Passwords do not match');
     }
@@ -31,7 +31,14 @@ export class UserService {
     user.username = createUserDto.username;
     user.password = await this.hashingService.hash(createUserDto.password);
 
-    return await this.userRepository.save(user);
+    const newUser = await this.userRepository.save(user);
+
+    return (
+      newUser &&
+      (({ id, name, email, username }) => ({ id, name, email, username }))(
+        newUser,
+      )
+    );
   }
 
   findAllUser(): Promise<User[]> {
