@@ -4,32 +4,14 @@ services:
     image: postgres:16.3
     tty: true
     restart: always
-    env_file:
-      - .env
-    environment:
-      - POSTGRES_DB=$DB_NAME
-      - POSTGRES_USER=$DB_USER
-      - POSTGRES_PASSWORD=$DB_PWD
     ports:
       - '$DB_PORT:$DB_PORT'
     volumes:
       - ./pgdata:/var/lib/postgresql/data
-    # networks:
-    #   - app-network
 
   user-service:
     container_name: monorepo-user-service
     restart: unless-stopped
-    env_file:
-      - .env
-    environment:
-      - NODE_ENV=development
-      - DB_USER=$DB_USER
-      - DB_PWD=$DB_PWD
-      - DB_HOST=$DB_HOST
-      - DB_PORT=$DB_PORT
-      - DB_NAME=$DB_NAME
-      - DB_DIALECT=$DB_DIALECT
     build:
       context: .
       args:
@@ -37,22 +19,10 @@ services:
     ports:
       - "$PORT_USER_API:$PORT_USER_API"
       - "5870:5870"
-    # volumes:
-    #   - .:/src:cached
 
   url-service:
     container_name: monorepo-url-service
     restart: unless-stopped
-    env_file:
-      - .env
-    environment:
-      - NODE_ENV=development
-      - DB_USER=$DB_USER
-      - DB_PWD=$DB_PWD
-      - DB_HOST=$DB_HOST
-      - DB_PORT=$DB_PORT
-      - DB_NAME=$DB_NAME
-      - DB_DIALECT=$DB_DIALECT
     build:
       context: .
       args:
@@ -60,19 +30,6 @@ services:
     ports:
       - "$PORT_URL_API:$PORT_URL_API"
       - "5880:5880"
-    # volumes:
-    #   - .:/src:cached
-
-    # volumes:
-    #   - .:/usr/src/app
-    #   - ./usr/src/app/node_modules
-    # networks:
-    #   - app-network
-#     command: yarn run nest start user-service
-
-# networks:
-#   app-network:
-#     driver: bridge
 
 volumes:
   pgdata:
