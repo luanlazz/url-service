@@ -1,4 +1,11 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  HttpRedirectResponse,
+} from '@nestjs/common';
 import { UrlService } from '../service/url.service';
 import { CreateURLDto } from '../dto/create-url.dto';
 
@@ -9,5 +16,16 @@ export class UrlController {
   @Post()
   create(@Body() createUrlDto: CreateURLDto) {
     return this.urlService.createUrl(createUrlDto);
+  }
+
+  @Get()
+  async redirect(@Param('id') id: string) {
+    const url = await this.urlService.findById(id);
+    const response: HttpRedirectResponse = {
+      statusCode: 302,
+      url: url.original_url,
+    };
+
+    return response;
   }
 }
