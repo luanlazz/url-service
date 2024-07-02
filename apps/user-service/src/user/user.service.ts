@@ -19,6 +19,10 @@ export class UserService {
       throw new Error('Passwords do not match');
     }
 
+    if (await this.userRepository.findByEmail(createUserDto.email)) {
+      throw new Error('Email already in use');
+    }
+
     const user: User = new User();
 
     user.id = this.uniqueId.generate();
