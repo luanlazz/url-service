@@ -22,6 +22,9 @@ export class Url {
   @Column({ type: 'varchar', length: 150, nullable: true })
   user: string;
 
+  @Column({ type: 'int', default: 0 })
+  access_count: number;
+
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
 

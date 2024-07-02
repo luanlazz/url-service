@@ -34,4 +34,8 @@ export class UrlService {
 
     return url;
   }
+
+  async incrementAccessCount(id: string): Promise<void> {
+    await this.urlRepository.increment({ id }, 'access_count', 1);
+  }
 }

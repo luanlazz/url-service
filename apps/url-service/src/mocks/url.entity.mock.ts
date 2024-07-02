@@ -7,6 +7,7 @@ export const createUrlEntityMockData = (): Url => {
     name: faker.lorem.words(),
     original_url: faker.internet.url(),
     user: null,
+    access_count: faker.number.int(),
     created_at: faker.date.recent(),
     updated_at: faker.date.recent(),
     deleted_at: null,
