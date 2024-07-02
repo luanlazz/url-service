@@ -5,6 +5,7 @@ import { createUserDTOMockData } from './mocks/create-user.dto.mock';
 import { UniqueIdService } from '../../../../libs/unique-id/src';
 import { HashingService } from '../../../../libs/hashing/src';
 import { UserRepository } from './user.repository';
+import { createUserEntityMockData } from './mocks/user.entity.mock';
 
 describe('UserService', () => {
   let service: UserService;
@@ -108,5 +109,21 @@ describe('UserService', () => {
       expect(error).toBeInstanceOf(Error);
       expect(error).toHaveProperty('message', 'Email already in use');
     }
+  });
+
+  it('should return all users when findAllUser is called', async () => {
+    const users = [
+      createUserEntityMockData(),
+      createUserEntityMockData(),
+      createUserEntityMockData(),
+    ];
+
+    jest
+      .spyOn(database, 'find')
+      .mockReturnValue(new Promise((resolve) => resolve(users)));
+
+    const response = await service.findAllUser();
+
+    expect(response).toHaveLength(3);
   });
 });
