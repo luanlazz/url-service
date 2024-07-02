@@ -2,15 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { CreateURLDto } from '../dto/create-url.dto';
 import { Url } from '../entities/url.entity';
 import { UniqueIdService } from '../../../../libs/unique-id/src';
+import { UrlRepository } from '../repository/url.repository';
 
 @Injectable()
 export class UrlService {
-  constructor(private readonly uniqueId: UniqueIdService) {}
+  constructor(
+    private readonly urlRepository: UrlRepository,
+    private readonly uniqueId: UniqueIdService,
+  ) {}
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   createUrl(createUrlDTO: CreateURLDto): Promise<Url> {
-    this.uniqueId.generate(6);
+    const url = new Url();
+    url.id = this.uniqueId.generate(6);
+    url.name = createUrlDTO.name;
+    url.originalUrl = createUrlDTO.url;
 
-    return null;
+    return this.urlRepository.save(url);
   }
 }
