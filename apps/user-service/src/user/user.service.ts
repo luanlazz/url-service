@@ -50,15 +50,23 @@ export class UserService {
     return users;
   }
 
-  async findOneById(id: string): Promise<Partial<User>> {
+  async findOneById(
+    id: string,
+    hidePass: boolean = true,
+  ): Promise<Partial<User>> {
     const user = await this.userRepository.findOneBy({ id });
-    delete user.password;
+    if (hidePass) delete user.password;
+
     return user;
   }
 
-  async findOneByEmail(email: string): Promise<Partial<User>> {
+  async findOneByEmail(
+    email: string,
+    hidePass: boolean = true,
+  ): Promise<Partial<User>> {
     const user = await this.userRepository.findByEmail(email);
-    delete user.password;
+    if (hidePass) delete user.password;
+
     return user;
   }
 }
