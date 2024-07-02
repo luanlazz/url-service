@@ -139,4 +139,16 @@ describe('UserService', () => {
 
     expect(response).toEqual(user);
   });
+
+  it('should return a user when findOneByEmail is called', async () => {
+    const user = createUserEntityMockData();
+
+    jest
+      .spyOn(database, 'findByEmail')
+      .mockReturnValue(new Promise((resolve) => resolve(user)));
+
+    const response = await service.findOneByEmail(user.email);
+
+    expect(response).toEqual(user);
+  });
 });
