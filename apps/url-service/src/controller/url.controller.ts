@@ -5,6 +5,7 @@ import {
   Param,
   Post,
   HttpRedirectResponse,
+  Redirect,
 } from '@nestjs/common';
 import { UrlService } from '../service/url.service';
 import { CreateURLDto } from '../dto/create-url.dto';
@@ -18,7 +19,8 @@ export class UrlController {
     return this.urlService.createUrl(createUrlDto);
   }
 
-  @Get()
+  @Get(':id')
+  @Redirect()
   async redirect(@Param('id') id: string) {
     const url = await this.urlService.findById(id);
     const response: HttpRedirectResponse = {
