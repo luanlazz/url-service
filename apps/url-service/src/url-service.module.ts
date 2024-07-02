@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { UrlServiceController } from './url-service.controller';
 import { config as dotenvConfig } from 'dotenv';
+import { UrlController } from './controller/url.controller';
 import { UrlService } from './service/url.service';
 import { UniqueIdModule } from 'libs/unique-id/src';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,7 +10,6 @@ import { UrlRepository } from './repository/url.repository';
 dotenvConfig({ path: '.env' });
 
 @Module({
-  controllers: [UrlServiceController],
   imports: [
     TypeOrmModule.forRoot({
       type: process.env.DB_DIALECT as 'postgres',
@@ -26,6 +25,7 @@ dotenvConfig({ path: '.env' });
     TypeOrmModule.forFeature([Url]),
     UniqueIdModule,
   ],
+  controllers: [UrlController],
   providers: [UrlService, UrlRepository],
 })
 export class UrlServiceModule {}
