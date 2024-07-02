@@ -6,6 +6,9 @@ import { UniqueIdModule } from 'libs/unique-id/src';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Url } from './entities/url.entity';
 import { UrlRepository } from './repository/url.repository';
+import { AuthModule } from 'apps/user-service/src/auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from 'apps/user-service/src/auth/auth.guard';
 
 dotenvConfig({ path: '.env' });
 
@@ -24,8 +27,16 @@ dotenvConfig({ path: '.env' });
     }),
     TypeOrmModule.forFeature([Url]),
     UniqueIdModule,
+    AuthModule,
   ],
   controllers: [UrlController],
-  providers: [UrlService, UrlRepository],
+  providers: [
+    UrlService,
+    UrlRepository,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class UrlServiceModule {}
