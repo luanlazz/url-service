@@ -15,7 +15,9 @@ export class Url {
   name: string;
 
   @Column({ type: 'varchar', length: 150, nullable: false })
-  originalUrl: string;
+  original_url: string;
+
+  new_url?: string;
 
   @Column({ type: 'varchar', length: 150, nullable: true })
   user: string;
