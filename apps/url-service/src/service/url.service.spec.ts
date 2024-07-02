@@ -85,4 +85,14 @@ describe('UrlService', () => {
       expect(error).toHaveProperty('message', 'URL not found');
     }
   });
+
+  it('should return the original url', async () => {
+    const id = faker.string.uuid();
+    const urlMock = createUrlEntityMockData();
+    urlRepository.findOne.mockResolvedValue(urlMock);
+
+    const url = await service.findById(id);
+
+    expect(url.original_url).toEqual(url.original_url);
+  });
 });
