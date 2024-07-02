@@ -36,4 +36,9 @@ describe('UniqueIdLibService', () => {
     expect(id2).not.toBe(id3);
     expect(id1).not.toBe(id3);
   });
+
+  it("should generate a unique ID's with a specific length", () => {
+    const id = service.generate(10);
+    expect(id.length).toBe(10);
+  });
 });
