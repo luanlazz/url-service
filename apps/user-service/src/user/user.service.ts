@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { UniqueIdService } from '../../../../libs/unique-id/src';
 import { HashingService } from '../../../../libs/hashing/src';
-import { UserRepository } from './user.repository';
+import { UserRepository } from './repository/user.repository';
 
 @Injectable()
 export class UserService {
@@ -40,15 +40,25 @@ export class UserService {
     );
   }
 
-  findAllUser(): Promise<User[]> {
-    return this.userRepository.find();
+  async findAllUser(): Promise<Partial<User>[]> {
+    const users = await this.userRepository.find();
+    users.map((user) => {
+      delete user.password;
+      return user;
+    });
+
+    return users;
   }
 
-  async findOneById(id: string) {
-    return await this.userRepository.findOneBy({ id });
+  async findOneById(id: string): Promise<Partial<User>> {
+    const user = await this.userRepository.findOneBy({ id });
+    delete user.password;
+    return user;
   }
 
-  async findOneByEmail(email: string) {
-    return await this.userRepository.findByEmail(email);
+  async findOneByEmail(email: string): Promise<Partial<User>> {
+    const user = await this.userRepository.findByEmail(email);
+    delete user.password;
+    return user;
   }
 }

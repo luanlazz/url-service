@@ -8,20 +8,7 @@ export class UserController {
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    const response = {};
-
-    try {
-      const user = await this.userService.create(createUserDto);
-      response['status'] = 'success';
-      response['data'] = user;
-    } catch (error) {
-      response['status'] = 'error';
-      response['message'] = error.message;
-      response['error'] = 'Bad Request';
-      response['statusCode'] = 400;
-    }
-
-    return response;
+    return await this.userService.create(createUserDto);
   }
 
   @Get()

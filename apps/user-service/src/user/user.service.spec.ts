@@ -4,7 +4,7 @@ import { UserService } from './user.service';
 import { createUserDTOMockData } from './mocks/create-user.dto.mock';
 import { UniqueIdService } from '../../../../libs/unique-id/src';
 import { HashingService } from '../../../../libs/hashing/src';
-import { UserRepository } from './user.repository';
+import { UserRepository } from './repository/user.repository';
 import { BadRequestException } from '@nestjs/common';
 import { createUserEntityMockData } from './mocks/user.entity.mock';
 
