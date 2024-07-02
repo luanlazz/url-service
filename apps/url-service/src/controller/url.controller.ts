@@ -21,6 +21,16 @@ export class UrlController {
     return this.urlService.createUrl(createUrlDto);
   }
 
+  @Get('/list')
+  async findAll() {
+    return this.urlService.findAll();
+  }
+
+  @Get('/list/:urlId')
+  async findByUrlId(@Param('urlId') urlId: string) {
+    return this.urlService.findById(urlId);
+  }
+
   @Public()
   @Get(':id')
   @Redirect()

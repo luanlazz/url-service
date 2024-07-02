@@ -1,4 +1,10 @@
-import { Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  Scope,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { config as dotenvConfig } from 'dotenv';
 import { CreateURLDto } from '../dto/create-url.dto';
 import { Url } from '../entities/url.entity';
@@ -33,12 +39,29 @@ export class UrlService {
   }
 
   async findById(id: string): Promise<Url> {
-    const url = await this.urlRepository.findOne({ where: { id } });
+    const userId = this.request['user']?.sub || null;
+
+    const url = await this.urlRepository.findOne({
+      where: { id, user: userId },
+    });
     if (!url) {
       throw new NotFoundException('URL not found');
     }
 
     return url;
+  }
+
+  async findAll(): Promise<Url[]> {
+    const userId = this.request['user']?.sub;
+    if (!userId) {
+      throw new UnauthorizedException();
+    }
+
+    const urls = await this.urlRepository.find({ where: { user: userId } });
+    return urls.map((url) => {
+      url.new_url = this.makeRedirectUrl(url);
+      return url;
+    });
   }
 
   async incrementAccessCount(id: string): Promise<void> {
