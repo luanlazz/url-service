@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { UrlServiceController } from './url-service.controller';
-import { UrlServiceService } from './url-service.service';
+import { UrlService } from './service/url.service';
+import { UniqueIdModule } from 'libs/unique-id/src';
 
 @Module({
-  imports: [],
   controllers: [UrlServiceController],
-  providers: [UrlServiceService],
+  imports: [UniqueIdModule],
+  providers: [UrlService],
 })
 export class UrlServiceModule {}
