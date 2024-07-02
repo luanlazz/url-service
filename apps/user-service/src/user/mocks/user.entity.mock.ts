@@ -11,6 +11,5 @@ export const createUserEntityMockData = (): User => {
     created_at: faker.date.recent(),
     updated_at: faker.date.recent(),
     deleted_at: faker.date.recent(),
-    urls: [],
   };
 };

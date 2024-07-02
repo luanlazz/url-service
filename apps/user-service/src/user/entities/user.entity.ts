@@ -1,10 +1,8 @@
-import { Url } from '../../../../url-service/src/entities/url.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  OneToMany,
   UpdateDateColumn,
 } from 'typeorm';
 
@@ -33,7 +31,4 @@ export class User {
 
   @DeleteDateColumn({ type: 'timestamp' })
   deleted_at: Date;
-
-  @OneToMany(() => Url, (url) => url.user, { nullable: false })
-  urls: Url[];
 }

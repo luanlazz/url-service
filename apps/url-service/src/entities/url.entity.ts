@@ -1,10 +1,8 @@
-import { User } from '../../../user-service/src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  ManyToOne,
   UpdateDateColumn,
 } from 'typeorm';
 
@@ -19,8 +17,8 @@ export class Url {
   @Column({ type: 'varchar', length: 150, nullable: false })
   originalUrl: string;
 
-  @ManyToOne(() => User, (user) => user.urls, { nullable: false })
-  user: User;
+  @Column({ type: 'varchar', length: 150, nullable: true })
+  user: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
