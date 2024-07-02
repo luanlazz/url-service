@@ -3,6 +3,7 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { config as dotenvConfig } from 'dotenv';
 import { User } from './user/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 dotenvConfig({ path: '.env' });
 
@@ -20,6 +21,7 @@ dotenvConfig({ path: '.env' });
       logging: true,
     }),
     UserModule,
+    AuthModule,
   ],
 })
 export class UserServiceModule {}
